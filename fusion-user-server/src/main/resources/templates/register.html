@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+	<title>注册</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="icon" href="favicon.ico">
+
+	<link rel="stylesheet" type="text/css" href="layout.css">
+
+	<meta content="#563d7c" name="theme-color">
+
+	<style>
+		.form-register {
+			width: 100%;
+			max-width: 330px;
+			padding: 15px;
+			margin: auto;
+		}
+
+		.form-register .checkbox {
+			font-weight: 400;
+		}
+
+		.form-register .form-control {
+			position: relative;
+			box-sizing: border-box;
+			height: auto;
+			padding: 10px;
+			font-size: 16px;
+		}
+
+		.form-register .form-control:focus {
+			z-index: 2;
+		}
+
+		.form-register input[type="email"] {
+			margin-bottom: -1px;
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		.form-register input[type="password"] {
+			margin-bottom: 10px;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	</style>
+</head>
+
+<body class="text-center">
+	<form class="form-register">
+		<img alt="" class="mb-4" src="https://www.easyicon.net/api/resizeApi.php?id=1207628&size=72" height="72px"
+			width="60px">
+		<h1 class="h3 mb-3 font-weight-normal">注册</h1>
+		<label class="sr-only" for="inputEmail">邮箱 或 手机</label>
+		<input class="form-control" id="inputEmail" name="userMark" placeholder="邮箱 或 手机" required="" type="text">
+		<label class="sr-only" for="inputPassword">密码</label>
+		<input class="form-control" id="inputPassword" name="password" placeholder="密码（长度至少为8）" required=""
+			type="password">
+		<input id="site" name="site" type="hidden"></input>
+		<div class="checkbox mb-3">
+			<label>
+				<input type="checkbox" value="remember-me" id="agree"> 同意<a href="#">隐私协议</a>
+			</label>
+
+			<button class="btn btn-lg btn-primary btn-block" id="submit" type="submit" disabled>立即注册</button>
+			<a id="btn-login" class="btn btn-lg btn-secondary btn-block" href="#" role="button">返回登录</a>
+			<p class="mt-5 mb-3 text-muted">iteknical.com © 2017-2020</p>
+		</div>
+	</form>
+
+	<div th:replace="components/footer-lib"></div>
+	<script>
+		var checkPass = false;
+
+		$(document).ready(function () {
+			// 获取url上的site参数并且传入表单
+			let searchParams = new URLSearchParams(window.location.search);
+			let site = searchParams.get('site');
+			$('#site').val(site);
+			let redirectURL = searchParams.get('redirectURL');
+			//console.log(redirectURL);
+			let loginURL = 'login?site=' + site + '&redirectURL=' + encodeURIComponent(redirectURL);
+
+			$('#btn-login').attr('href', loginURL);
+
+			$('.form-register').submit(function (e) {
+				// 阻止默认提交
+				e.preventDefault();
+
+				// 检查外标是否已注册
+				$.ajax({
+					url: "api/checkUserExist",
+					type: "GET",
+					async: false,
+					data: {
+						"userMark": $("#inputEmail").val()
+					},
+					success: function (result) {
+						//console.log(result);
+						let data;
+						try {
+							data = checkResultAndGetData(result);
+						} catch (error) {
+							alert(JSON.stringify(error));
+							return;
+						}
+
+						if (data == null) {
+							return;
+						}
+						if (data == true) {
+							alert('此用户已注册，请直接登录');
+							checkPass = false;
+							return;
+						}
+						checkPass = true;
+					},
+					error: function (xhr, resp, text) {
+						console.log(xhr, resp, text)
+					}
+				});
+				if (checkPass == false) {
+					return;
+				}
+
+				// 注册
+				$.ajax({
+					url: "api/register", // url where to submit the request
+					type: "POST", // type of action POST || GET
+					contentType: 'application/json;charset=UTF-8',
+					dataType: 'json', // data type
+					data: serializeFormData($('.form-register')), // post data || get data
+					success: function (result) {
+						//console.log(result);
+						let data;
+						try {
+							data = checkResultAndGetData(result);
+						} catch (error) {
+							alert(JSON.stringify(error));
+							return;
+						}
+
+						//console.log(data);
+						if (data == null) {
+							return;
+						}
+						if (data == false) {
+							alert(JSON.stringify(result));
+							return;
+						}
+						alert('注册成功');
+						window.location.replace(loginURL);
+					},
+					error: function (xhr, resp, text) {
+						console.log(xhr, resp, text);
+					}
+				});
+			});
+		})
+	</script>
+
+	<!-- 注册按钮在选定框未被选中时为灰色 -->
+	<script>
+		$(document).ready(function () {
+			$('#agree').change(function () {
+				if ($('#agree').prop("checked")) {
+					$('#submit').prop("disabled", false)
+				} else {
+					$('#submit').prop("disabled", true)
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

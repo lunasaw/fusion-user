@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+	<title>账户中心</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="icon" href="../favicon.ico">
+	
+	<meta content="#563d7c" name="theme-color">
+
+	<style>
+		main {
+			margin: auto;
+		}
+
+		/* 移除"newMobile"输入框中的图标*/
+
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
+
+		input[type="number"] {
+			-moz-appearance: textfield;
+		}
+
+		.form-updatePassword,
+		.form-updateEmail,
+		.form-updateNumber {
+			margin-bottom: 20px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<main class="col-md-6 offset-md-3" role="main">
+				<h2 class="pt-3 pb-2 mb-3 border-bottom">账户信息</h2>
+				<table class="table table-striped table-bordered">
+					<tbody>
+						<tr>
+							<td>编号</td>
+							<td id="text-id"></td>
+						</tr>
+						<tr>
+							<td>邮箱</td>
+							<td id="text-email"></td>
+						</tr>
+						<tr>
+							<td>手机</td>
+							<td id="text-mobile"></td>
+						</tr>
+						<tr>
+							<td>注册时间</td>
+							<td id="text-create-time"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h2 class="pt-3 pb-2 mb-3 border-bottom">重置密码</h2>
+				<form class="form-updatePassword">
+					<div class="input-group">
+						<input id="newPassword" name="newPassword" placeholder="新密码（长度至少为8）" type="password"
+							class="form-control col-md-4 mr-sm-2">
+						<input id="updatePassword" name="" type="submit" value="提交修改" class="btn btn-primary">
+					</div>
+				</form>
+
+				<h2 class="pt-3 pb-2 mb-3 border-bottom">重置邮箱</h2>
+				<form class="form-updateEmail">
+					<div class="input-group">
+						<input id="newEmail" name="newEmail" placeholder="输入新邮箱" type="email"
+							class="form-control col-md-4 mr-sm-2">
+						<input id="updateEmail" name="" type="submit" value="提交修改" class="btn btn-primary">
+					</div>
+				</form>
+
+				<h2 class="pt-3 pb-2 mb-3 border-bottom">重置绑定手机</h2>
+				<form class="form-updateMobile">
+					<div class="input-group">
+						<input id="newMobile" name="newMobile" placeholder="输入新手机" type="number"
+							class="form-control col-md-4 mr-sm-2">
+						<input id="updateMobile" name="" type="submit" value="提交修改" class="btn btn-primary">
+					</div>
+				</form>
+			</main>
+
+		</div>
+	</div>
+
+	<div th:replace="components/footer-lib"></div>
+
+	<script>
+		$(document).ready(function () {
+			$('#nav-index').addClass('active');
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			// 获取url上的site参数并且传入表单
+			let searchParams = new URLSearchParams(window.location.search);
+			let site = searchParams.get('site');
+			//console.log(redirectURL);
+
+			$.ajax({
+				url: '/fusion-user/api/getUserDOBySessionKey', // url where to submit the request
+				type: 'GET', // type of action POST || GET
+				data: {
+					'site': site
+				},
+				success: function (result) {
+					//console.log(result);
+					let data;
+					try {
+						data = checkResultAndGetData(result);
+					} catch (error) {
+						alert(JSON.stringify(error));
+						return;
+					}
+
+					//console.log(data);
+					if (data == null) {
+						return;
+					}
+					// 渲染页面
+					if (data.email != null) {
+						$('#text-email').text(data.email);
+					}
+					if (data.mobile != null) {
+						$('#text-mobile').text(data.mobile);
+					}
+					$('#text-id').text(data.id);
+					$('#text-create-time').text(data.createTime);
+				},
+				error: function (xhr, resp, text) {
+					console.log(xhr, resp, text);
+				}
+			});
+
+			$('.form-updatePassword').submit(function (e) {
+				// 阻止默认提交
+				e.preventDefault();
+
+				$.ajax({
+					url: '/fusion-user/api/user/updatePassword?site=' + site,
+					type: 'POST',
+					contentType: 'application/json;charset=UTF-8',
+					data: serializeFormData($('.form-updatePassword')),
+					success: function (result) {
+						try {
+							checkResultAndGetData(result);
+						} catch (error) {
+							alert(JSON.stringify(error));
+							return;
+						}
+
+						alert('修改成功');
+						location.reload();
+					},
+					error: function (xhr, resp, text) {
+						console.log(xhr, resp, text)
+					}
+				});
+			});
+
+			$('.form-updateEmail').submit(function (e) {
+				// 阻止默认提交
+				e.preventDefault();
+
+				$.ajax({
+					url: '/fusion-user/api/user/updateEmail?site=' + site,
+					type: 'POST',
+					contentType: 'application/json;charset=UTF-8',
+					data: serializeFormData($('.form-updateEmail')),
+					success: function (result) {
+						try {
+							checkResultAndGetData(result);
+						} catch (error) {
+							alert(JSON.stringify(error));
+							return;
+						}
+
+						alert('修改成功');
+						location.reload();
+					},
+					error: function (xhr, resp, text) {
+						console.log(xhr, resp, text)
+					}
+				});
+			});
+
+			$('.form-updateMobile').submit(function (e) {
+				// 阻止默认提交
+				e.preventDefault();
+
+				$.ajax({
+					url: '/fusion-user/api/user/updateMobile?site=' + site,
+					type: 'POST',
+					contentType: 'application/json;charset=UTF-8',
+					data: serializeFormData($('.form-updateMobile')),
+					success: function (result) {
+						try {
+							checkResultAndGetData(result);
+						} catch (error) {
+							alert(JSON.stringify(error));
+							return;
+						}
+
+						alert('修改成功');
+						location.reload();
+					},
+					error: function (xhr, resp, text) {
+						console.log(xhr, resp, text)
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>

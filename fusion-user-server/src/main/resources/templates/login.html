@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+	<title>登录</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="icon" href="favicon.ico">
+
+	<link rel="stylesheet" type="text/css" href="layout.css">
+
+	<meta content="#563d7c" name="theme-color">
+
+	<style>
+		.form-signin {
+			width: 100%;
+			max-width: 330px;
+			padding: 15px;
+			margin: auto;
+		}
+
+		.form-signin .checkbox {
+			font-weight: 400;
+		}
+
+		.form-signin .form-control {
+			position: relative;
+			box-sizing: border-box;
+			height: auto;
+			padding: 10px;
+			font-size: 16px;
+		}
+
+		.form-signin .form-control:focus {
+			z-index: 2;
+		}
+
+		.form-signin input[type="email"] {
+			margin-bottom: -1px;
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		.form-signin input[type="password"] {
+			margin-bottom: 10px;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	</style>
+</head>
+
+<body class="text-center">
+	<form class="form-signin">
+		<img alt="" class="mb-4" height="72px" src="https://www.easyicon.net/api/resizeApi.php?id=1207631&size=72"
+			width="72px">
+		<h1 class="h3 mb-3 font-weight-normal">登录</h1>
+		<label class="sr-only" for="inputEmail">邮箱 或 手机</label>
+		<input autofocus="" class="form-control" name="userMark" placeholder="邮箱 或 手机" required="" type="text">
+		<label class="sr-only" for="inputPassword">密码</label>
+		<input class="form-control" name="password" placeholder="密码" required="" type="password">
+		<input id="site" name="site" type="hidden"></input>
+		
+		<div class="checkbox mb-3">
+			<!--
+        <label>
+            <input type="checkbox" value="remember-me"> 记住密码
+        </label>
+        -->
+			<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+			<a id="btn-register" class="btn btn-lg btn-secondary btn-block" href="#" role="button">立即注册</a>
+			<p class="mt-2"><a id="a-reset-password" href="#">忘记密码?</a></p>
+			<p class="mt-5 mb-3 text-muted">iteknical.com © 2017-2020</p>
+		</div>
+	</form>
+
+	<div th:replace="components/footer-lib"></div>
+
+	<script>
+		$(document).ready(function () {
+			// 获取url上的site参数并且传入表单
+			let searchParams = new URLSearchParams(window.location.search);
+			let site = searchParams.get('site');
+			$('#site').val(site);
+			let redirectURL = searchParams.get('redirectURL');
+			// console.log(redirectURL);
+
+			$('#btn-register').attr('href', 'register?site=' + site + '&redirectURL=' + encodeURIComponent(
+				redirectURL));
+			$('#a-reset-password').attr('href', 'resetPassword?site=' + site + '&redirectURL=' + encodeURIComponent(
+				redirectURL));
+
+			$('.form-signin').submit(function (e) {
+				// 阻止默认提交
+				e.preventDefault();
+
+				// send ajax
+				$.ajax({
+					url: "api/login", // url where to submit the request
+					type: "POST", // type of action POST || GET
+					contentType: 'application/json;charset=UTF-8',
+					dataType: 'json', // data type
+					data: serializeFormData($('.form-signin')), // post data || get data
+					success: function (result) {
+						// console.log(result);
+						let data;
+						try {
+							data = checkResultAndGetData(result);
+						} catch (error) {
+							alert(JSON.stringify(error));
+							return;
+						}
+
+						// console.log(data);
+						// if (data == null) {
+						// 	alert(JSON.stringify(result));
+						// 	return;
+						// }
+						window.location.replace(redirectURL);
+					},
+					error: function (xhr, resp, text) {
+						console.log(xhr, resp, text);
+					}
+				})
+			});
+		});
+	</script>
+
+</body>
+
+</html>

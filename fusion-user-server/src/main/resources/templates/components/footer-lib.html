@@ -1,0 +1,26 @@
+<!-- footer lib -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.staticfile.org/feather-icons/4.24.1/feather.min.js"></script>
+
+<script>
+	//serialize form data
+	function serializeFormData($form) {
+		let unindexed_array = $form.serializeArray();
+		let indexed_array = {};
+
+		$.map(unindexed_array, function (n, i) {
+			indexed_array[n['name']] = n['value'];
+		});
+
+		return JSON.stringify(indexed_array);
+	}
+
+	function checkResultAndGetData($result) {
+		if ($result.success == false) {
+			throw $result;
+		}
+		return $result.data;
+	}
+</script>
