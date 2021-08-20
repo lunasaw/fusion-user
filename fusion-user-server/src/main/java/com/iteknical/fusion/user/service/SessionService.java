@@ -15,7 +15,7 @@ import com.iteknical.fusion.user.dao.SessionDAO;
 import com.iteknical.fusion.user.entity.SessionDO;
 
 /**
- * @author Tony
+ * @author Luna
  */
 @EnableScheduling
 @Service

@@ -1,7 +1,7 @@
 package com.iteknical.fusion.user.constant;
 
 /**
- * @author Tony
+ * @author Luna
  */
 public interface ConstantHolder {
     /** session过期时间，单位小时 */

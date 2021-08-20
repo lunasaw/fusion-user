@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
- * @author Tony
+ * @author Luna
  */
 public class LoginVO {
 

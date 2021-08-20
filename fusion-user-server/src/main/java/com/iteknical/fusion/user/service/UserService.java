@@ -38,7 +38,7 @@ import com.iteknical.fusion.user.support.MessageSupport;
 public class UserService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserDAO        userDAO;
     @Autowired
     private SessionService sessionService;
     @Autowired
@@ -144,6 +144,13 @@ public class UserService {
         userDAO.insert(userDO);
     }
 
+    public UserDO getDOByUserId(String site, Long userId) {
+        if (!SitesConstant.isLegal(site)) {
+            throw new UserException(ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+        return userDAO.get(userId);
+    }
+
     public Long getUserIdBySessionKey(String sessionKey, String site) {
         UserDO userDO = getUserDOBySessionKey(sessionKey, site);
         if (userDO == null) {
@@ -153,7 +160,7 @@ public class UserService {
     }
 
     public UserDO getUserDOBySessionKey(String sessionKey, String site) {
-        if (SitesConstant.isLegal(site) == false) {
+        if (!SitesConstant.isLegal(site)) {
             throw new UserException(ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }
 

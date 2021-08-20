@@ -9,7 +9,7 @@ import com.iteknical.fusion.user.constant.URLConstant;
 import com.iteknical.fusion.user.interceptor.LoginInterceptor;
 
 /**
- * @author Tony
+ * @author Luna
  */
 @Configuration
 public class WebConfigurer implements WebMvcConfigurer {

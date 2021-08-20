@@ -19,7 +19,7 @@ import com.iteknical.fusion.user.utils.CookieUtils;
 import com.iteknical.fusion.user.vo.*;
 
 /**
- * @author Tony
+ * @author Luna
  */
 @RestController
 @RequestMapping(URLConstant.API)
@@ -58,6 +58,31 @@ public class UserRest {
         userService.register(registerVO.getUserMark(), registerVO.getPassword(), registerVO.getSite());
 
         return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, true);
+    }
+
+    /**
+     * userId换userDO
+     * <p>
+     * sessionKey支持显式入参和从cookies中取
+     * </p>
+     *
+     * @param sessionKey
+     * @param userId
+     * @return
+     */
+    @GetMapping(URLConstant.GET_USER_DO_BY_USER_ID)
+    public ResultDTO<UserDO> getDOByUserId(HttpServletRequest request,
+        @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
+        @RequestParam(name = "site") String site,
+        @RequestParam(name = "userId") Long userId) {
+        if (StringUtils.isEmpty(site)) {
+            return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+
+        sessionKey = CookieUtils.getOneSessionKey(sessionKey, request);
+
+        return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS,
+            userService.getDOByUserId(site, userId));
     }
 
     /**

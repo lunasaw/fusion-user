@@ -10,7 +10,7 @@ import com.iteknical.fusion.user.exception.UserException;
 import com.iteknical.fusion.user.exception.constant.BizResultCode;
 
 /**
- * @author Tony
+ * @author Luna
  */
 public class CookieUtils {
     /** session key名字 */

@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*;
 import com.iteknical.fusion.user.entity.UserDO;
 
 /**
- * @author Tony
+ * @author Luna
  * @Description userDO Mapper
  * @date 2019年8月28日 下午5:54:35
  */

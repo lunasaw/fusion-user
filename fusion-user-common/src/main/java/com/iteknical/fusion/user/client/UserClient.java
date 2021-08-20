@@ -10,7 +10,7 @@ import com.iteknical.fusion.user.entity.UserDO;
 import com.iteknical.fusion.user.vo.LoginVO;
 
 /**
- * @author Tony
+ * @author Luna
  */
 public class UserClient {
     private String host;
@@ -32,6 +32,12 @@ public class UserClient {
         String result = RestUtils.doGet(host, PATH_PREFIX + URLConstant.GET_USER_ID_BY_SESSION_KEY, null,
             ImmutableMap.of("sessionKey", sessionKey, "site", site));
         return JSON.parseObject(result, new TypeReference<ResultDTO<Long>>() {});
+    }
+
+    public ResultDTO<UserDO> getDOByUserId(String sessionKey, String site, Long userId) {
+        String result = RestUtils.doGet(host, PATH_PREFIX + URLConstant.GET_USER_DO_BY_USER_ID, null,
+            ImmutableMap.of("sessionKey", sessionKey, "site", site, "userId", userId.toString()));
+        return JSON.parseObject(result, new TypeReference<ResultDTO<UserDO>>() {});
     }
 
     public ResultDTO<String> login(LoginVO loginVO) {

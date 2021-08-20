@@ -27,11 +27,11 @@ import com.iteknical.fusion.user.utils.DTO2DOUtils;
 public class UserTagService {
 
     @Autowired
-    private UserTagDAO userTagDAO;
+    private UserTagDAO     userTagDAO;
     @Autowired
-    private TagDAO tagDAO;
+    private TagDAO         tagDAO;
     @Autowired
-    private UserService userService;
+    private UserService    userService;
 
     @Autowired
     private SessionService sessionService;

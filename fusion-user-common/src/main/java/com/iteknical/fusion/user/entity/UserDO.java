@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * user实体
  * 
- * @author Tony
+ * @author Luna
  */
 public class UserDO {
 

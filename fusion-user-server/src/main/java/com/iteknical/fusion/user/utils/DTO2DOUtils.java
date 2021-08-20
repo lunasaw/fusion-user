@@ -6,7 +6,7 @@ import com.iteknical.fusion.user.entity.UserTagDO;
 /**
  * 外部DTO到内部DO的防腐层
  * 
- * @author Tony
+ * @author Luna
  */
 public class DTO2DOUtils {
 

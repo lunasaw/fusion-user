@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * @author Tony
+ * @author Luna
  */
 public interface BizResultCode {
 
