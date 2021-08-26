@@ -36,6 +36,11 @@ public class UserTagService {
     @Autowired
     private SessionService sessionService;
 
+    public List<TagDO> listTag(String sessionKey, String site) {
+        userService.isAdmin(sessionKey, site);
+        return tagDAO.list();
+    }
+
     /**
      * 判断标志
      *

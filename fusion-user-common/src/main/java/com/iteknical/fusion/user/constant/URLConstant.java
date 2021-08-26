@@ -57,6 +57,11 @@ public interface URLConstant {
     String GET_USER_DO_BY_SESSION_KEY = "getUserDOBySessionKey";
 
     /**
+     * 查看所有标
+     */
+    String TAG_LIST                   = "listTag";
+
+    /**
      * 检验标是否存在
      */
     String HAS_TAG                    = "hasTag";

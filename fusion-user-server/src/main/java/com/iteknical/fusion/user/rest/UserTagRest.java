@@ -2,6 +2,7 @@ package com.iteknical.fusion.user.rest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.iteknical.fusion.user.entity.TagDO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import com.iteknical.fusion.user.service.UserTagService;
 import com.iteknical.fusion.user.utils.CookieUtils;
 import com.iteknical.fusion.user.vo.TagVO;
 
+import java.util.List;
+
 /**
  * @author Iszychen@win10
  * @date 2020/2/16 18:49
@@ -25,6 +28,27 @@ public class UserTagRest {
 
     @Autowired
     private UserTagService userTagService;
+
+    /**
+     * 查看所有标
+     *
+     * @param request
+     * @param site
+     * @return
+     */
+    @PostMapping(URLConstant.TAG_LIST)
+    public ResultDTO<List<TagDO>> listTag(HttpServletRequest request,
+        @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
+        @RequestParam(name = "site") String site) {
+        if (StringUtils.isEmpty(site)) {
+            return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+
+        sessionKey = CookieUtils.getOneSessionKey(sessionKey, request);
+
+        return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS,
+            userTagService.listTag(sessionKey, site));
+    }
 
     /**
      * 判断是否有标

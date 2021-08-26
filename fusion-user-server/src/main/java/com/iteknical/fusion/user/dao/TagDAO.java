@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.*;
 
 import com.iteknical.fusion.user.entity.TagDO;
 
+import java.util.List;
+
 /**
  * @author Iszychen@win10
  * @date 2020/2/13 18:12
@@ -35,4 +37,14 @@ public interface TagDAO {
         @Result(property = "mark", column = "mark"),
     })
     TagDO get(@Param("name") String name);
+
+    @Select("SELECT id, create_time, name, sequence, mark FROM tb_tag")
+    @Results({
+        @Result(property = "id", column = "id"),
+        @Result(property = "createTime", column = "create_time"),
+        @Result(property = "name", column = "name"),
+        @Result(property = "sequence", column = "sequence"),
+        @Result(property = "mark", column = "mark"),
+    })
+    List<TagDO> list();
 }
