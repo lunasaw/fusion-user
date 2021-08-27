@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.iteknical.common.dto.ResultDTO;
 import com.iteknical.common.utils.RestUtils;
 import com.iteknical.fusion.user.constant.URLConstant;
+import com.iteknical.fusion.user.req.TagReq;
 import com.iteknical.fusion.user.vo.TagVO;
 import com.iteknical.fusion.user.vo.UserTagVO;
 
@@ -25,9 +26,9 @@ public class UserTagClient {
     private static final String PATH_PREFIX =
         URLConstant.S + URLConstant.FUSION_USER + URLConstant.S + URLConstant.API + URLConstant.S;
 
-    public ResultDTO<List<UserTagVO>> listTagByUser(String sessionKey, String site, TagVO tagVO) {
+    public ResultDTO<List<UserTagVO>> listTagByUser(String sessionKey, String site, TagReq tagReq) {
         String result = RestUtils.doPost(host, PATH_PREFIX + URLConstant.TAG_LIST, null,
-            ImmutableMap.of("sessionKey", sessionKey, "site", site), JSON.toJSONString(tagVO));
+            ImmutableMap.of("sessionKey", sessionKey, "site", site), JSON.toJSONString(tagReq));
         return JSON.parseObject(result, new TypeReference<ResultDTO<List<UserTagVO>>>() {});
     }
 

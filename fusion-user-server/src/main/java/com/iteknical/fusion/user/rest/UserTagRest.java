@@ -3,6 +3,7 @@ package com.iteknical.fusion.user.rest;
 import javax.servlet.http.HttpServletRequest;
 
 import com.iteknical.fusion.user.entity.TagDO;
+import com.iteknical.fusion.user.req.TagReq;
 import com.iteknical.fusion.user.vo.UserTagVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class UserTagRest {
     public ResultDTO<List<UserTagVO>> listTagByUser(HttpServletRequest request,
         @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
         @RequestParam(name = "site") String site,
-        @RequestBody @MyValid TagVO tagVO) {
+        @RequestBody @MyValid TagReq tagReq) {
         if (StringUtils.isEmpty(site)) {
             return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }
@@ -70,7 +71,7 @@ public class UserTagRest {
         sessionKey = CookieUtils.getOneSessionKey(sessionKey, request);
 
         return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS,
-            userTagService.listTagByUser(sessionKey, site, tagVO));
+            userTagService.listTagByUser(sessionKey, site, tagReq));
     }
 
     /**

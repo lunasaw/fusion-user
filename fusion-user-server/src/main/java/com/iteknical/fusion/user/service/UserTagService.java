@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.iteknical.fusion.user.constant.SitesConstant;
 import com.iteknical.fusion.user.constant.UserTagNameConstant;
 import com.iteknical.fusion.user.entity.UserDO;
+import com.iteknical.fusion.user.req.TagReq;
 import com.iteknical.fusion.user.utils.DO2VOUtils;
 import com.iteknical.fusion.user.vo.TagVO;
 import com.iteknical.fusion.user.vo.UserTagVO;
@@ -55,17 +56,17 @@ public class UserTagService {
         }).collect(Collectors.toList());
     }
 
-    public List<UserTagVO> listTagByUser(String sessionKey, String site, TagVO tagVO) {
+    public List<UserTagVO> listTagByUser(String sessionKey, String site, TagReq tagReq) {
         userService.isAdmin(sessionKey, site);
         List<TagDO> list = tagDAO.list();
-        String userMask = tagVO.getUserMask();
+        String userMask = tagReq.getUserMask();
         UserDO userDO = userService.get(userMask);
         UserTagDO userTagDO = userTagDAO.get(userDO.getId());
         UserTagDTO userTagDTO = DO2DTOUtils.UserTagDO2UserTagDTO(userTagDO);
         ArrayList<UserTagVO> tagVos = Lists.newArrayList();
         for (TagDO tagDO : list) {
             if ((userTagDTO.getUserTags().get(tagDO.getSequence() - 1) & tagDO.getMark()) == tagDO.getMark()) {
-                tagVos.add(DO2VOUtils.userDO2UserTagVO(userDO, tagDO.getName()));
+                tagVos.add(DO2VOUtils.userDO2UserTagVO(userDO, userTagDTO.getModifiedTime(), tagDO.getName()));
             }
         }
         return tagVos;

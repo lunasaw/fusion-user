@@ -7,6 +7,7 @@ import com.iteknical.fusion.user.entity.UserDO;
 import com.iteknical.fusion.user.vo.TagVO;
 import com.iteknical.fusion.user.vo.UserTagVO;
 
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -24,14 +25,14 @@ public class DO2VOUtils {
         return tagVO;
     }
 
-    public static UserTagVO userDO2UserTagVO(UserDO userDO, String tagName) {
+    public static UserTagVO userDO2UserTagVO(UserDO userDO, Date data, String tagName) {
         if (userDO == null) {
             return null;
         }
         UserTagVO userTagVO = new UserTagVO();
         userTagVO.setId(userDO.getId());
         userTagVO.setCreateTime(userDO.getCreateTime());
-        userTagVO.setModifiedTime(userDO.getModifiedTime());
+        userTagVO.setModifiedTime(data);
         userTagVO.setEmail(userDO.getEmail());
         userTagVO.setMobile(userDO.getMobile());
         userTagVO.setSiteSet(JSON.parseObject(userDO.getSites(), new TypeReference<Set<String>>() {}));
