@@ -3,6 +3,7 @@ package com.iteknical.fusion.user.rest;
 import javax.servlet.http.HttpServletRequest;
 
 import com.iteknical.fusion.user.entity.TagDO;
+import com.iteknical.fusion.user.vo.UserTagVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,8 @@ public class UserTagRest {
      * @param site
      * @return
      */
-    @PostMapping(URLConstant.TAG_LIST)
-    public ResultDTO<List<TagDO>> listTag(HttpServletRequest request,
+    @GetMapping(URLConstant.TAG_LIST)
+    public ResultDTO<List<TagVO>> listTag(HttpServletRequest request,
         @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
         @RequestParam(name = "site") String site) {
         if (StringUtils.isEmpty(site)) {
@@ -51,6 +52,28 @@ public class UserTagRest {
     }
 
     /**
+     * 查看用户所有标
+     *
+     * @param request
+     * @param site
+     * @return
+     */
+    @PostMapping(URLConstant.TAG_LIST)
+    public ResultDTO<List<UserTagVO>> listTagByUser(HttpServletRequest request,
+        @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
+        @RequestParam(name = "site") String site,
+        @RequestBody @MyValid TagVO tagVO) {
+        if (StringUtils.isEmpty(site)) {
+            return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+
+        sessionKey = CookieUtils.getOneSessionKey(sessionKey, request);
+
+        return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS,
+            userTagService.listTagByUser(sessionKey, site, tagVO));
+    }
+
+    /**
      * 判断是否有标
      *
      * @param request
@@ -60,9 +83,9 @@ public class UserTagRest {
      */
     @PostMapping(URLConstant.HAS_TAG)
     public ResultDTO<Boolean> hasTag(HttpServletRequest request,
-                                     @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
-                                     @RequestParam(name = "site") String site,
-                                     @RequestBody @MyValid TagVO tagVO) {
+        @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
+        @RequestParam(name = "site") String site,
+        @RequestBody @MyValid TagVO tagVO) {
         if (StringUtils.isEmpty(site)) {
             return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }
@@ -70,7 +93,7 @@ public class UserTagRest {
         sessionKey = CookieUtils.getOneSessionKey(sessionKey, request);
 
         return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS,
-                userTagService.hasTag(sessionKey, site, tagVO.getName()));
+            userTagService.hasTag(sessionKey, site, tagVO.getName()));
     }
 
     /**
@@ -83,15 +106,15 @@ public class UserTagRest {
      */
     @PostMapping(URLConstant.ADD_TAG)
     public ResultDTO<Void> addTag(HttpServletRequest request, @RequestParam(name = "site") String site,
-                                  @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
-                                  @RequestBody @MyValid TagVO tagVO) {
+        @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
+        @RequestBody @MyValid TagVO tagVO) {
         if (StringUtils.isEmpty(site)) {
             return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }
 
         sessionKey = CookieUtils.getOneSessionKey(sessionKey, request);
 
-        userTagService.addTag(sessionKey, site, tagVO.getName(), tagVO.getUserMask(), tagVO.getSite());
+        userTagService.addTag(sessionKey, site, tagVO.getName(), tagVO.getUserMask());
         return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
     }
 
@@ -105,8 +128,8 @@ public class UserTagRest {
      */
     @PostMapping(URLConstant.REMOVE_TAG)
     public ResultDTO<Void> removeTag(HttpServletRequest request, @RequestParam(name = "site") String site,
-                                     @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
-                                     @RequestBody @MyValid TagVO tagVO) {
+        @RequestParam(name = CookieUtils.SESSION_KEY_NAME, required = false) String sessionKey,
+        @RequestBody @MyValid TagVO tagVO) {
         if (StringUtils.isEmpty(site)) {
             return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }

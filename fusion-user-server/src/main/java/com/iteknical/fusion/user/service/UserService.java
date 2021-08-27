@@ -47,6 +47,10 @@ public class UserService {
     private UserTagService userTagService;
 
     public void isAdmin(String sessionKey, String site) {
+        if (!SitesConstant.isLegal(site)) {
+            throw new UserException(ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+
         TagVO tagVO = new TagVO();
         tagVO.setName(UserTagNameConstant.IS_ADMIN);
         if (!userTagService.hasTag(sessionKey, site, tagVO.getName())) {
@@ -124,7 +128,7 @@ public class UserService {
     }
 
     public void register(String userMark, String password, String site) {
-        if (SitesConstant.isLegal(site) == false) {
+        if (!SitesConstant.isLegal(site)) {
             throw new UserException(ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }
 

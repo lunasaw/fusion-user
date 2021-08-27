@@ -14,16 +14,6 @@ public class TagVO {
 
     private String userMask;
 
-    private String site;
-
-    public String getSite() {
-        return site;
-    }
-
-    public void setSite(String site) {
-        this.site = site;
-    }
-
     public String getUserMask() {
         return userMask;
     }
@@ -43,9 +33,8 @@ public class TagVO {
     @Override
     public String toString() {
         return "TagVO{" +
-                "name='" + name + '\'' +
-                ", userMask='" + userMask + '\'' +
-                ", site='" + site + '\'' +
-                '}';
+            "name='" + name + '\'' +
+            ", userMask='" + userMask + '\'' +
+            '}';
     }
 }
