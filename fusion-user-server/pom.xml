@@ -82,17 +82,22 @@
 		</dependency>
 
 		<!--fusion message-->
-		<dependency>
-			<groupId>com.iteknical</groupId>
-			<artifactId>fusion-message-common</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.iteknical</groupId>
+            <artifactId>fusion-message-common</artifactId>
+        </dependency>
 
-		<!-- hce self -->
-		<dependency>
-			<groupId>com.iteknical</groupId>
-			<artifactId>fusion-user-common</artifactId>
-		</dependency>
-	</dependencies>
+        <!-- hce self -->
+        <dependency>
+            <groupId>com.iteknical</groupId>
+            <artifactId>fusion-user-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.lunasaw</groupId>
+            <artifactId>luna-common</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
