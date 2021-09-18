@@ -4,9 +4,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.luna</groupId>
+    <groupId>io.github.lunasaw</groupId>
     <artifactId>fusion-user-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <packaging>pom</packaging>
 
@@ -45,27 +45,27 @@
     </licenses>
 
     <distributionManagement>
-        <!--        <repository>-->
-        <!--            <id>ossrh</id>-->
-        <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-        <!--        </repository>-->
-        <!--        <snapshotRepository>-->
-        <!--            <id>ossrh</id>-->
-        <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
-        <!--        </snapshotRepository>-->
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
 
 
         <!-- 两个ID必须与setting.xml中的<server><id>nexus-releases</id></server>保持一致-->
-        <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Release Repository</name>
-            <url>http://localhost:8082/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>http://localhost:8082/repository/maven-snapshots/</url>
-        </snapshotRepository>
+        <!--        <repository>-->
+        <!--            <id>nexus-releases</id>-->
+        <!--            <name>Nexus Release Repository</name>-->
+        <!--            <url>http://localhost:8082/repository/maven-releases/</url>-->
+        <!--        </repository>-->
+        <!--        <snapshotRepository>-->
+        <!--            <id>nexus-snapshots</id>-->
+        <!--            <name>Nexus Snapshot Repository</name>-->
+        <!--            <url>http://localhost:8082/repository/maven-snapshots/</url>-->
+        <!--        </snapshotRepository>-->
     </distributionManagement>
 
     <scm>
@@ -97,9 +97,9 @@
 
             <!-- self -->
             <dependency>
-                <groupId>com.luna</groupId>
+                <groupId>io.github.lunasaw</groupId>
                 <artifactId>fusion-user-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
