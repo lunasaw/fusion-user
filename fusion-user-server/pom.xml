@@ -11,7 +11,7 @@
 	<description>fusion-user-server</description>
 
 	<parent>
-		<groupId>com.iteknical</groupId>
+		<groupId>com.luna</groupId>
 		<artifactId>fusion-user-parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
@@ -75,11 +75,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- iteknical-common -->
-		<dependency>
-			<groupId>com.iteknical</groupId>
-			<artifactId>iteknical-common</artifactId>
-		</dependency>
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
 
 		<!--fusion message-->
         <dependency>
@@ -89,7 +89,7 @@
 
         <!-- hce self -->
         <dependency>
-            <groupId>com.iteknical</groupId>
+            <groupId>com.luna</groupId>
             <artifactId>fusion-user-common</artifactId>
         </dependency>
 
@@ -98,14 +98,5 @@
             <artifactId>luna-common</artifactId>
         </dependency>
     </dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
