@@ -2,6 +2,8 @@ package com.luna.fusion.user.service;
 
 import java.util.List;
 
+import com.luna.common.encrypt.HashUtils;
+import com.luna.common.text.RandomStrUtil;
 import com.luna.fusion.user.constant.ConstantHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import com.iteknical.common.utils.HashUtils;
 import com.luna.fusion.user.dao.SessionDAO;
 import com.luna.fusion.user.entity.SessionDO;
 
@@ -26,7 +26,7 @@ public class SessionService {
     private SessionDAO          sessionDAO;
 
     public String add(long userId) {
-        String key = HashUtils.randomHex32();
+        String key = RandomStrUtil.generateNonceStr();
 
         SessionDO sessionDO = new SessionDO();
         sessionDO.setKey(key);

@@ -1,15 +1,16 @@
 package com.luna.fusion.user.support;
 
+import com.luna.common.dto.ResultDTO;
+import com.luna.common.dto.ResultDTOUtils;
+import com.luna.fusion.message.client.MessageClient;
+import com.luna.fusion.message.dto.MessageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.iteknical.common.dto.ResultDTO;
-import com.iteknical.common.utils.ResultDTOUtils;
-import com.iteknical.fusion.message.client.MessageClient;
-import com.iteknical.fusion.message.dto.MessageDTO;
+
 
 /**
  * @author Iszychen@win10

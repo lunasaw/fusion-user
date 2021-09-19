@@ -6,6 +6,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.luna.common.dto.constant.ResultCode;
+import com.luna.common.encrypt.HashTools;
+import com.luna.common.encrypt.HashUtils;
+import com.luna.common.text.RandomStrUtil;
+import com.luna.common.utils.MaskUtils;
+import com.luna.fusion.message.constant.MessageTypeConstant;
+import com.luna.fusion.message.dto.MessageDTO;
 import com.luna.fusion.user.constant.UserTagNameConstant;
 import com.luna.fusion.user.vo.TagVO;
 import org.apache.commons.codec.binary.Base64;
@@ -17,11 +24,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.iteknical.common.dto.constant.ResultCode;
-import com.iteknical.common.utils.CommonUtils;
-import com.iteknical.common.utils.HashUtils;
-import com.iteknical.fusion.message.constant.MessageTypeConstant;
-import com.iteknical.fusion.message.dto.MessageDTO;
 import com.luna.fusion.user.constant.SitesConstant;
 import com.luna.fusion.user.dao.UserDAO;
 import com.luna.fusion.user.entity.UserDO;
@@ -58,10 +60,14 @@ public class UserService {
     }
 
     public UserDO get(String userMark) {
-        if (CommonUtils.isEmailAddress(userMark)) {
+        if (MaskUtils.isEmailAddress(userMark)) {
             return userDAO.getByEmail(userMark);
         }
         return userDAO.getByMobile(userMark);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(hashPassword("11111111"));
     }
 
     public String login(String userMark, String password, String site) {
@@ -72,14 +78,9 @@ public class UserService {
         String hash = hashPassword(password);
 
         UserDO userDO = null;
-        if (CommonUtils.isEmailAddress(userMark)) {
+        if (MaskUtils.isEmailAddress(userMark)) {
             userDO = userDAO.getByEmailAndPassword(userMark, hash);
-            // TODO 临时逻辑，兼容老hash算法，等待推动下线
-            if (userDO == null) {
-                hash = oldSHA512(oldSHA512(userMark) + oldSHA512(password));
-                userDO = userDAO.getByEmailAndPassword(userMark, hash);
-            }
-        } else if (CommonUtils.isMobilePhoneNumber(userMark)) {
+        } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO = userDAO.getByMobileAndPassword(userMark, hash);
         } else {
             throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
@@ -136,9 +137,9 @@ public class UserService {
         UserDO userDO = new UserDO();
         userDO.setPassword(hash);
         userDO.setSites(JSON.toJSONString(ImmutableSet.of(site)));
-        if (CommonUtils.isEmailAddress(userMark)) {
+        if (MaskUtils.isEmailAddress(userMark)) {
             userDO.setEmail(userMark);
-        } else if (CommonUtils.isMobilePhoneNumber(userMark)) {
+        } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO.setMobile(userMark);
         } else {
             throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
@@ -184,9 +185,9 @@ public class UserService {
 
     public boolean checkUserExist(String userMark) {
         UserDO userDO = null;
-        if (CommonUtils.isEmailAddress(userMark)) {
+        if (MaskUtils.isEmailAddress(userMark)) {
             userDO = userDAO.getByEmail(userMark);
-        } else if (CommonUtils.isMobilePhoneNumber(userMark)) {
+        } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO = userDAO.getByMobile(userMark);
         } else {
             throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
@@ -203,31 +204,9 @@ public class UserService {
     private static String hashPassword(String plain) {
         String temp = plain;
         for (int i = 0; i < plain.length(); i++) {
-            temp = HashUtils.SHA512(temp);
+            temp = HashTools.sha256(temp);
         }
         return temp;
-    }
-
-    private static String oldSHA512(String plain) {
-        if (StringUtils.isEmpty(plain)) {
-            return null;
-        }
-
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-512");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            md.update(plain.getBytes("UTF-16LE"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        byte byteData[] = md.digest();
-
-        String hashCodeBuffer = Base64.encodeBase64String(byteData);
-        return hashCodeBuffer.toString();
     }
 
     /**
@@ -255,7 +234,7 @@ public class UserService {
      * @return
      */
     public void updateEmail(String sessionKey, String site, String newEmail) {
-        if (CommonUtils.isEmailAddress(newEmail) == false) {
+        if (MaskUtils.isEmailAddress(newEmail) == false) {
             throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的邮箱地址");
         }
 
@@ -277,7 +256,7 @@ public class UserService {
      * @return
      */
     public void updateMobile(String sessionKey, String site, String newMobile) {
-        if (CommonUtils.isMobilePhoneNumber(newMobile) == false) {
+        if (MaskUtils.isMobilePhoneNumber(newMobile) == false) {
             throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号");
         }
 
@@ -301,13 +280,13 @@ public class UserService {
         UserDO userDO = new UserDO();
         MessageDTO messageDTO = new MessageDTO();
 
-        if (CommonUtils.isEmailAddress(userMark)) {
+        if (MaskUtils.isEmailAddress(userMark)) {
             userDO = userDAO.getByEmail(userMark);
 
             messageDTO.setTargetList(ImmutableList.of(userMark));
             messageDTO.setMessageType(MessageTypeConstant.EMAIL);
             messageDTO.setTemplateId(13);
-        } else if (CommonUtils.isMobilePhoneNumber(userMark)) {
+        } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO = userDAO.getByMobile(userMark);
 
             messageDTO.setTargetList(ImmutableList.of(userMark));
@@ -317,7 +296,7 @@ public class UserService {
             throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
         }
 
-        String randomPassword = HashUtils.randomHex32();
+        String randomPassword = RandomStrUtil.generateNonceStr();
         userDO.setPassword(hashPassword(randomPassword));
         if (userDAO.updatePassword(userDO) != 1) {
             throw new UserException(ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);

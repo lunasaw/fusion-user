@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
+import com.luna.common.dto.constant.ResultCode;
 import com.luna.fusion.user.entity.UserDO;
 import com.luna.fusion.user.req.TagReq;
 import com.luna.fusion.user.utils.DO2VOUtils;
@@ -12,8 +13,6 @@ import com.luna.fusion.user.vo.TagVO;
 import com.luna.fusion.user.vo.UserTagVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.iteknical.common.dto.constant.ResultCode;
 import com.luna.fusion.user.dao.TagDAO;
 import com.luna.fusion.user.dao.UserTagDAO;
 import com.luna.fusion.user.dto.UserTagDTO;
@@ -24,7 +23,6 @@ import com.luna.fusion.user.exception.constant.BizResultCode;
 import com.luna.fusion.user.utils.DO2DTOUtils;
 import com.luna.fusion.user.utils.DTO2DOUtils;
 
-import static java.util.stream.Collectors.toMap;
 
 /**
  * @author Iszychen@win10

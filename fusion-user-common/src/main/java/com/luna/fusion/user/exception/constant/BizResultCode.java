@@ -22,6 +22,14 @@ public interface BizResultCode {
     int                              SITE_NOT_ACTIVATED              = 1103;
     String                           MSG_SITE_NOT_ACTIVATED          = "site not activated";
 
+    /** 权限未认证 */
+    int                              SITE_NOT_AUTH                   = 1104;
+    String                           MSG_SITE_NOT_AUTH               = "site not auth";
+
+    /** 不是管理员 */
+    int                              SITE_NOT_ADMIN                  = 1105;
+    String                           MSG_SITE_NOT_ADMIN              = "site not admin";
+
     Map<Locale, Map<String, String>> TRANSLATION_MAP                 =
         ImmutableMap.<Locale, Map<String, String>>builder()
             .put(Locale.SIMPLIFIED_CHINESE,
@@ -29,6 +37,8 @@ public interface BizResultCode {
                     .put(MSG_USER_NOT_SIGN_IN, "用户未登录")
                     .put(MSG_WRONG_USER_MARK_OR_PASSWORD, "用户名或密码错误")
                     .put(MSG_SITE_NOT_ACTIVATED, "站点未激活")
+                    .put(MSG_SITE_NOT_AUTH, "权限未认证")
+                    .put(MSG_SITE_NOT_ADMIN, "不是管理员")
                     .build())
             .build();
 }

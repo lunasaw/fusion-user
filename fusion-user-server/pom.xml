@@ -13,7 +13,7 @@
     <parent>
         <groupId>io.github.lunasaw</groupId>
         <artifactId>fusion-user-parent</artifactId>
-        <version>1.0</version>
+        <version>1.0-RELEASE</version>
     </parent>
 
     <developers>
@@ -39,19 +39,6 @@
             <id>ossrh</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-
-
-        <!-- 两个ID必须与setting.xml中的<server><id>nexus-releases</id></server>保持一致-->
-        <!--        <repository>-->
-        <!--            <id>nexus-releases</id>-->
-        <!--            <name>Nexus Release Repository</name>-->
-        <!--            <url>http://localhost:8082/repository/maven-releases/</url>-->
-        <!--        </repository>-->
-        <!--        <snapshotRepository>-->
-        <!--            <id>nexus-snapshots</id>-->
-        <!--            <name>Nexus Snapshot Repository</name>-->
-        <!--            <url>http://localhost:8082/repository/maven-snapshots/</url>-->
-        <!--        </snapshotRepository>-->
     </distributionManagement>
 
     <scm>
@@ -120,15 +107,9 @@
 			<scope>runtime</scope>
 		</dependency>
 
-        <!-- fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-
 		<!--fusion message-->
         <dependency>
-            <groupId>com.iteknical</groupId>
+            <groupId>io.github.lunasaw</groupId>
             <artifactId>fusion-message-common</artifactId>
         </dependency>
 

@@ -10,7 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import org.apache.commons.collections4.CollectionUtils;
+import com.luna.common.anno.MyValid;
+import com.luna.common.dto.ResultDTO;
+import com.luna.common.dto.constant.ResultCode;
+import com.luna.common.encrypt.HashUtils;
+import com.luna.common.exception.BaseException;
+import com.luna.common.text.RandomStrUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,11 +37,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.iteknical.common.anno.MyValid;
-import com.iteknical.common.dto.ResultDTO;
-import com.iteknical.common.dto.constant.ResultCode;
-import com.iteknical.common.utils.HashUtils;
-import com.iteknical.common.utils.exception.BaseException;
 import com.luna.fusion.user.exception.UserException;
 import com.luna.fusion.user.exception.constant.BizResultCode;
 
@@ -74,7 +75,7 @@ public class ApiAspect {
                 ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             MDC.put("uri", request.getRequestURI());
 
-            MDC.put("traceId", HashUtils.randomHex32());
+            MDC.put("traceId", RandomStrUtil.getUUID());
 
             logger.info("rest request, param={}", JSON.toJSONString(args, SerializerFeature.IgnoreNonFieldGetter));
         }

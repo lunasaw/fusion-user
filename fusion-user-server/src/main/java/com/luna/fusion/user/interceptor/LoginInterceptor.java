@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.luna.common.dto.ResultDTO;
+import com.luna.common.dto.constant.ResultCode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
-import com.iteknical.common.dto.ResultDTO;
-import com.iteknical.common.dto.constant.ResultCode;
 import com.luna.fusion.user.exception.UserException;
 import com.luna.fusion.user.exception.constant.BizResultCode;
 import com.luna.fusion.user.service.UserService;
@@ -57,7 +57,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             + URLEncoder.encode(originURL, ENCODING);
 
         String sessionKey = CookieUtils.getSessionKeyFromRequest(request);
-        if (checkSessionKey(sessionKey, site) == false) {
+        if (!checkSessionKey(sessionKey, site)) {
             // 这儿通过调用链接中有无/api/来判断是否是rest调用，不甚合理，但暂无它法
             if (request.getRequestURL().indexOf("/api/") == -1) {
                 logger.info("sessionKey not found, redirectURL={}", redirectURL);

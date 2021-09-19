@@ -6,7 +6,7 @@
 
     <groupId>io.github.lunasaw</groupId>
     <artifactId>fusion-user-parent</artifactId>
-    <version>1.0</version>
+    <version>1.0-RELEASE</version>
 
     <packaging>pom</packaging>
 
@@ -82,30 +82,24 @@
                 <version>2.1.1</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>1.2.75</version>
-            </dependency>
-
             <!-- fusion-message -->
             <dependency>
-                <groupId>com.iteknical</groupId>
+                <groupId>io.github.lunasaw</groupId>
                 <artifactId>fusion-message-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0-RELEASE</version>
             </dependency>
 
             <!-- self -->
             <dependency>
                 <groupId>io.github.lunasaw</groupId>
                 <artifactId>fusion-user-common</artifactId>
-                <version>1.0</version>
+                <version>1.0-RELEASE</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.lunasaw</groupId>
                 <artifactId>luna-common</artifactId>
-                <version>1.5.9</version>
+                <version>1.6.1-RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
