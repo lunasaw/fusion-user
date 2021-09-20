@@ -1,6 +1,6 @@
 package com.luna.fusion.user.req;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author Iszychen@win10
@@ -11,6 +11,7 @@ public class TagReq {
     /** 标志名称 */
     private String name;
 
+    @NotBlank
     private String userMask;
 
     public String getUserMask() {

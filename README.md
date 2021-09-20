@@ -1,6 +1,5 @@
 # fusion-user
-iteknical.com fusion-user
-用户中台
+luna.com fusion-user 用户中台
 
 # Contributor
 - Tony
