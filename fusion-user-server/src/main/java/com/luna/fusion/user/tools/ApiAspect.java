@@ -1,10 +1,8 @@
 package com.luna.fusion.user.tools;
 
 import java.lang.reflect.Parameter;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -13,7 +11,6 @@ import javax.validation.Validator;
 import com.luna.common.anno.MyValid;
 import com.luna.common.dto.ResultDTO;
 import com.luna.common.dto.constant.ResultCode;
-import com.luna.common.encrypt.HashUtils;
 import com.luna.common.exception.BaseException;
 import com.luna.common.text.RandomStrUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -75,7 +72,7 @@ public class ApiAspect {
                 ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             MDC.put("uri", request.getRequestURI());
 
-            MDC.put("traceId", RandomStrUtil.getUUID());
+            MDC.put("traceId", RandomStrUtil.generateNonceStr());
 
             logger.info("rest request, param={}", JSON.toJSONString(args, SerializerFeature.IgnoreNonFieldGetter));
         }
@@ -117,7 +114,7 @@ public class ApiAspect {
         String className = methodSignature.getDeclaringType().getSimpleName();
         String method = methodSignature.getMethod().getName();
 
-        if (IGNORE_LOG_METHOD.containsKey(className) == false) {
+        if (!IGNORE_LOG_METHOD.containsKey(className)) {
             return true;
         }
 
@@ -167,8 +164,14 @@ public class ApiAspect {
             if (CollectionUtils.isEmpty(validResult)) {
                 continue;
             }
+
+            Set<String> messages = new HashSet<>(validResult.size());
+            messages.addAll(validResult.stream()
+                .map(violation -> String.format("%s ( '%s' )： %s", violation.getPropertyPath().toString(),
+                    violation.getInvalidValue(), violation.getMessage()))
+                .collect(Collectors.toList()));
             logger.info("checkParam not pass, parameter={}, resultMessage={}", parameter, validResult);
-            throw new UserException(ResultCode.PARAMETER_INVALID, translateMessage(ResultCode.MSG_PARAMETER_INVALID));
+            throw new UserException(ResultCode.PARAMETER_INVALID, messages.toString());
         }
     }
 

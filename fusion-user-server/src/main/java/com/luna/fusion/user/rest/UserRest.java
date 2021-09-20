@@ -49,7 +49,7 @@ public class UserRest {
      * @param userMark
      * @return
      */
-    @GetMapping("checkUserExist")
+    @GetMapping(URLConstant.CHECK_USER_EXIST)
     public ResultDTO<Boolean> checkUserExist(@RequestParam(name = "userMark") String userMark) {
         return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, userService.checkUserExist(userMark));
     }
@@ -163,19 +163,16 @@ public class UserRest {
     @PostMapping(URLConstant.USER + URLConstant.S + "updateEmail")
     public ResultDTO<Void> updateEmail(HttpServletRequest request, @RequestParam(name = "site") String site,
         @RequestBody @MyValid UpdateEmailVO updateEmailVO) {
-        // TODO 在老数据迁移完成之前，关闭修改邮箱入口
-        return new ResultDTO<>(false, ResultCode.INTERFACE_OFFLINE, ResultCode.MSG_INTERFACE_OFFLINE);
+        if (StringUtils.isEmpty(site)) {
+            return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+        String sessionKey = CookieUtils.getSessionKeyFromRequest(request);
+        if (StringUtils.isBlank(sessionKey)) {
+            return new ResultDTO<>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);
+        }
 
-        // if (StringUtils.isEmpty(site)) {
-        // return new ResultDTO<>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
-        // }
-        // String sessionKey = CookieUtils.getSessionKeyFromRequest(request);
-        // if (StringUtils.isBlank(sessionKey)) {
-        // return new ResultDTO<>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);
-        // }
-        //
-        // userService.updateEmail(sessionKey, site, updateEmailVO.getNewEmail());
-        // return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
+        userService.updateEmail(sessionKey, site, updateEmailVO.getNewEmail());
+        return new ResultDTO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
     }
 
     /**

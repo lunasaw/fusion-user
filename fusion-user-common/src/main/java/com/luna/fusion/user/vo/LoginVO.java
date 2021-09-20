@@ -17,7 +17,7 @@ public class LoginVO {
     @Size(min = 8)
     private String password;
     /** 站点 */
-    @NotBlank
+    @NotBlank(message = "站点不能为空")
     private String site;
 
     public String getUserMark() {

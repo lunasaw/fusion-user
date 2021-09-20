@@ -48,6 +48,10 @@ public interface URLConstant {
     String GET_USER_ID_BY_SESSION_KEY = "getUserIdBySessionKey";
 
     /**
+     * 检查用户是否存在
+     */
+    String CHECK_USER_EXIST           = "checkUserExist";
+    /**
      * userId换userDO
      */
     String GET_USER_DO_BY_USER_ID     = "getDOByUserId";

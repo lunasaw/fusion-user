@@ -31,7 +31,7 @@
         <!-- github server corresponds to entry in ~/.m2/settings.xml -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <luna.common.version>1.6.2-RELEASE</luna.common.version>
+        <luna.common.version>1.6.3-RELEASE</luna.common.version>
     </properties>
 
     <developers>
