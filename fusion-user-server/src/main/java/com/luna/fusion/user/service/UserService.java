@@ -66,9 +66,6 @@ public class UserService {
         return userDAO.getByMobile(userMark);
     }
 
-    public static void main(String[] args) {
-        System.out.println(hashPassword("11111111"));
-    }
 
     public String login(String userMark, String password, String site) {
         if (!SitesConstant.isLegal(site)) {
@@ -83,7 +80,7 @@ public class UserService {
         } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO = userDAO.getByMobileAndPassword(userMark, hash);
         } else {
-            throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
+            throw UserException.userMarkNotALlow();
         }
 
         // 登录失败
@@ -142,7 +139,7 @@ public class UserService {
         } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO.setMobile(userMark);
         } else {
-            throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
+            throw UserException.userMarkNotALlow();
         }
 
         userDAO.insert(userDO);
@@ -190,7 +187,7 @@ public class UserService {
         } else if (MaskUtils.isMobilePhoneNumber(userMark)) {
             userDO = userDAO.getByMobile(userMark);
         } else {
-            throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
+            throw UserException.userMarkNotALlow();
         }
         return userDO != null;
     }
@@ -234,8 +231,8 @@ public class UserService {
      * @return
      */
     public void updateEmail(String sessionKey, String site, String newEmail) {
-        if (MaskUtils.isEmailAddress(newEmail) == false) {
-            throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的邮箱地址");
+        if (!MaskUtils.isEmailAddress(newEmail)) {
+            throw UserException.userMarkNotALlow();
         }
 
         UserDO userDO = getUserDOBySessionKey(sessionKey, site);
@@ -256,8 +253,8 @@ public class UserService {
      * @return
      */
     public void updateMobile(String sessionKey, String site, String newMobile) {
-        if (MaskUtils.isMobilePhoneNumber(newMobile) == false) {
-            throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号");
+        if (!MaskUtils.isMobilePhoneNumber(newMobile)) {
+            throw UserException.userMarkNotALlow();
         }
 
         UserDO userDO = getUserDOBySessionKey(sessionKey, site);
@@ -293,7 +290,7 @@ public class UserService {
             messageDTO.setMessageType(MessageTypeConstant.MOBILE);
             messageDTO.setTemplateId(13);
         } else {
-            throw new UserException(ResultCode.PARAMETER_INVALID, "不是一个合法的手机号或者邮箱地址");
+            throw UserException.userMarkNotALlow();
         }
 
         String randomPassword = RandomStrUtil.generateNonceStr();

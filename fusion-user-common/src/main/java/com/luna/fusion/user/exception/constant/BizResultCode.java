@@ -18,6 +18,10 @@ public interface BizResultCode {
     int                              WRONG_USER_MARK_OR_PASSWORD     = 1102;
     String                           MSG_WRONG_USER_MARK_OR_PASSWORD = "wrong user mark or password";
 
+    /** 不是一个合法的手机号或者邮箱地址 */
+    int                              WRONG_USER_MARK_NOT_ALLOW       = 1102;
+    String                           MSG_USER_MARK_NOT_ALLOW         = "wrong user mark not allow";
+
     /** 站点未激活 */
     int                              SITE_NOT_ACTIVATED              = 1103;
     String                           MSG_SITE_NOT_ACTIVATED          = "site not activated";
@@ -39,6 +43,7 @@ public interface BizResultCode {
                     .put(MSG_SITE_NOT_ACTIVATED, "站点未激活")
                     .put(MSG_SITE_NOT_AUTH, "权限未认证")
                     .put(MSG_SITE_NOT_ADMIN, "不是管理员")
+                    .put(MSG_USER_MARK_NOT_ALLOW, "不是一个合法的手机号或者邮箱地址")
                     .build())
             .build();
 }
