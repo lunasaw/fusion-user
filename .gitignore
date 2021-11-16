@@ -45,6 +45,9 @@ hs_err_pid*
 /.nb-gradle/
 /build/
 
+.DS_Store
+/*/.DS_Store
+
 ### VS Code ###
 .vscode/
 
